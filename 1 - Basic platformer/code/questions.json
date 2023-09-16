@@ -1,0 +1,5 @@
+{
+  "in python, using print the expression Hello World":{
+    "answer": [print("Hello World")],
+    "correct_answer": 1
+  }
