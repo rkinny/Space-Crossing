@@ -5,23 +5,23 @@ class Player(pygame.sprite.Sprite):
 	def __init__(self,pos,floor):
 		super().__init__()
 		self.import_character_assets()
-		self.frame_index = 0
-		self.animation_speed = 0.15
-		self.image = self.animations['guy'][self.frame_index]
+		self.fIndex = 1
+		self.aSpeed = 0.15
+		self.image = self.animations['guy'][self.fIndex]
 		self.rect = self.image.get_rect(topleft = pos)
 		self.display_floor = floor
 
 		# player movement
-		self.direction = pygame.math.Vector2(0,0)
+		self.dir = pygame.math.Vector2(0,0)
 		self.speed = 8
 		self.gravity = 0.8
-		self.jump_speed = -16
+		self.jSpeed = -16
 
 		# player status
 		self.status = 'guy'
-		self.facing_right = True
-		self.on_ground = False
-		self.on_ceiling = False
+		self.fRight = True
+		self.onGround = False
+		self.onCeiling = False
 		self.on_left = False
 		self.on_right = False
 
@@ -36,26 +36,21 @@ class Player(pygame.sprite.Sprite):
 	def animate(self):
 		animation = self.animations['guy']
 
-		# loop over frame index 
-		self.frame_index += self.animation_speed
-		if self.frame_index >= len(animation):
-			self.frame_index = 0
-
-		image = animation[int(self.frame_index)]
+		image = animation[int(self.fIndex)]
 		self.image = image
 
 		# set the rect
-		if self.on_ground and self.on_right:
+		if self.onGround and self.on_right:
 			self.rect = self.image.get_rect(bottomright = self.rect.bottomright)
-		elif self.on_ground and self.on_left:
+		elif self.onGround and self.on_left:
 			self.rect = self.image.get_rect(bottomleft = self.rect.bottomleft)
-		elif self.on_ground:
+		elif self.onGround:
 			self.rect = self.image.get_rect(midbottom = self.rect.midbottom)
-		elif self.on_ceiling and self.on_right:
+		elif self.onCeiling and self.on_right:
 			self.rect = self.image.get_rect(topright = self.rect.topright)
-		elif self.on_ceiling and self.on_left:
+		elif self.onCeiling and self.on_left:
 			self.rect = self.image.get_rect(topleft = self.rect.topleft)
-		elif self.on_ceiling:
+		elif self.onCeiling:
 			self.rect = self.image.get_rect(midtop = self.rect.midtop)
 
 
@@ -63,34 +58,34 @@ class Player(pygame.sprite.Sprite):
 		keys = pygame.key.get_pressed()
 
 		if keys[pygame.K_RIGHT]:
-			self.direction.x = 1
-			self.facing_right = True
+			self.dir.x = 1
+			self.fRight = True
 		elif keys[pygame.K_LEFT]:
-			self.direction.x = -1
-			self.facing_right = False
+			self.dir.x = -1
+			self.fRight = False
 		else:
-			self.direction.x = 0
+			self.dir.x = 0
 
-		if keys[pygame.K_SPACE] and self.on_ground:
+		if keys[pygame.K_SPACE] and self.onGround:
 			self.jump()
 
 	def get_status(self):
-		if self.direction.y < 0:
+		if self.dir.y < 0:
 			self.status = 'jump'
-		elif self.direction.y > 1:
+		elif self.dir.y > 1:
 			self.status = 'fall'
 		else:
-			if self.direction.x != 0:
+			if self.dir.x != 0:
 				self.status = 'run'
 			else:
 				self.status = 'guy'
 
 	def apply_gravity(self):
-		self.direction.y += self.gravity
-		self.rect.y += self.direction.y
+		self.dir.y += self.gravity
+		self.rect.y += self.dir.y
 
 	def jump(self):
-		self.direction.y = self.jump_speed
+		self.dir.y = self.jSpeed
 
 	def update(self):
 		self.get_input()
