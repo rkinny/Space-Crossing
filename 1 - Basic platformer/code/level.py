@@ -8,7 +8,7 @@ class Level:
 		
 		# level setup
 		self.display_floor = floor 
-		self.set_level(data)
+		self.sLevel(data)
 		self.shift = 0
 		self.currx = 0
 
@@ -20,7 +20,7 @@ class Level:
 		else:
 			self.playerOnGround = False
 
-	def set_level(self,lay):
+	def sLevel(self,lay):
 		self.t = pygame.sprite.Group()
 		self.player = pygame.sprite.GroupSingle()
 
@@ -51,26 +51,6 @@ class Level:
 			self.shift = 0
 			player.speed = 8
 
-	def hCollision(self):
-		player = self.player.sprite
-		player.rect.x += player.dir.x * player.speed
-
-		for sprite in self.t.sprites():
-			if sprite.rect.colliderect(player.rect):
-				if player.dir.x < 0: 
-					player.rect.left = sprite.rect.right
-					player.on_left = True
-					self.currx = player.rect.left
-				elif player.dir.x > 0:
-					player.rect.right = sprite.rect.left
-					player.on_right = True
-					self.currx = player.rect.right
-
-		if player.on_left and (player.rect.left < self.currx or player.dir.x >= 0):
-			player.on_left = False
-		if player.on_right and (player.rect.right > self.currx or player.dir.x <= 0):
-			player.on_right = False
-
 	def vCollision(self):
 		player = self.player.sprite
 		player.apply_gravity()
@@ -90,6 +70,26 @@ class Level:
 			player.onGround = False
 		if player.onCeiling and player.dir.y > 0.1:
 			player.onCeiling = False
+	
+	def hCollision(self):
+		player = self.player.sprite
+		player.rect.x += player.dir.x * player.speed
+
+		for sprite in self.t.sprites():
+			if sprite.rect.colliderect(player.rect):
+				if player.dir.x < 0: 
+					player.rect.left = sprite.rect.right
+					player.onLeft = True
+					self.currx = player.rect.left
+				elif player.dir.x > 0:
+					player.rect.right = sprite.rect.left
+					player.onRight = True
+					self.currx = player.rect.right
+
+		if player.onLeft and (player.rect.left < self.currx or player.dir.x >= 0):
+			player.onLeft = False
+		if player.onRight and (player.rect.right > self.currx or player.dir.x <= 0):
+			player.onRight = False
 
 	def run(self):
 		# level tiles
