@@ -7,7 +7,7 @@ class Player(pygame.sprite.Sprite):
 		self.import_character_assets()
 		self.frame_index = 0
 		self.animation_speed = 0.15
-		self.image = self.animations['idle'][self.frame_index]
+		self.image = self.animations['guy'][self.frame_index]
 		self.rect = self.image.get_rect(topleft = pos)
 		self.display_surface = surface
 
@@ -18,7 +18,7 @@ class Player(pygame.sprite.Sprite):
 		self.jump_speed = -16
 
 		# player status
-		self.status = 'idle'
+		self.status = 'guy'
 		self.facing_right = True
 		self.on_ground = False
 		self.on_ceiling = False
@@ -26,15 +26,15 @@ class Player(pygame.sprite.Sprite):
 		self.on_right = False
 
 	def import_character_assets(self):
-		character_path = '../graphics/character/'
-		self.animations = {'idle':[],'run':[],'jump':[],'fall':[]}
+		character_path = '../graphics/character/guy/'
+		self.animations = {'guy':[]}
 
-		for animation in self.animations.keys():
-			full_path = character_path + animation
-			self.animations[animation] = import_folder(full_path)
+		# for animation in self.animations.keys():
+		full_path = character_path
+		self.animations["guy"] = import_folder(full_path)
 	
 	def animate(self):
-		animation = self.animations[self.status]
+		animation = self.animations['guy']
 
 		# loop over frame index 
 		self.frame_index += self.animation_speed
@@ -42,11 +42,7 @@ class Player(pygame.sprite.Sprite):
 			self.frame_index = 0
 
 		image = animation[int(self.frame_index)]
-		if self.facing_right:
-			self.image = image
-		else:
-			flipped_image = pygame.transform.flip(image,True,False)
-			self.image = flipped_image
+		self.image = image
 
 		# set the rect
 		if self.on_ground and self.on_right:
@@ -87,7 +83,7 @@ class Player(pygame.sprite.Sprite):
 			if self.direction.x != 0:
 				self.status = 'run'
 			else:
-				self.status = 'idle'
+				self.status = 'guy'
 
 	def apply_gravity(self):
 		self.direction.y += self.gravity
