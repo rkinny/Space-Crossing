@@ -1,17 +1,21 @@
 import pygame, sys
-level_map = [
-'                                                ',
-'                                                ',
-'                                                ',
-' XX                                             ',
-' XX P                                           ',
-' XXXX                                           ',
-' XXXX       XX                                  ',
-' XX    X  XXXX    XX  XX        XXXXX           ',
-'       X  XXXX    XX  XXX                       ',
-'    XXXX  XXXXXX  XX  XXXX  XXXX     XXXXXX     ',
-'XXXXXXXX  XXXXXX  XX  XXXX  XXXXXX              ']
+from settings import * 
+from level import Level
 
-tile_size = 48 #64
-screen_width = 1500
-screen_height = len(level_map) * tile_size
+# Pygame setup
+pygame.init()
+screen = pygame.display.set_mode((screen_width,screen_height))
+clock = pygame.time.Clock()
+level = Level(level_map,screen)
+
+while True:
+	for event in pygame.event.get():
+		if event.type == pygame.QUIT:
+			pygame.quit()
+			sys.exit()
+	
+	screen.fill('black')
+	level.run()
+
+	pygame.display.update()
+	clock.tick(60)
