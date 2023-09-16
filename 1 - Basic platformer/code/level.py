@@ -4,11 +4,11 @@ from settings import tile_size, screen_width
 from player import Player
 
 class Level:
-	def __init__(self,level_data,surface):
+	def __init__(self, data, floor):
 		
 		# level setup
-		self.display_surface = surface 
-		self.setup_level(level_data)
+		self.display_floor = floor 
+		self.setup_level(data)
 		self.world_shift = 0
 		self.current_x = 0
 
@@ -33,7 +33,7 @@ class Level:
 					tile = Tile((x,y),tile_size)
 					self.tiles.add(tile)
 				if cell == 'P':
-					player_sprite = Player((x,y),self.display_surface)
+					player_sprite = Player((x,y),self.display_floor)
 					self.player.add(player_sprite)
 
 	def scroll_x(self):
@@ -94,7 +94,7 @@ class Level:
 	def run(self):
 		# level tiles
 		self.tiles.update(self.world_shift)
-		self.tiles.draw(self.display_surface)
+		self.tiles.draw(self.display_floor)
 		self.scroll_x()
 
 
@@ -103,4 +103,4 @@ class Level:
 		self.horizontal_movement_collision()
 		self.get_player_on_ground()
 		self.vertical_movement_collision()
-		self.player.draw(self.display_surface)
+		self.player.draw(self.display_floor)
