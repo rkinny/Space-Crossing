@@ -1,0 +1,13 @@
+{
+  "in python, print the expression Hello World": {
+    "answer": ["print(\"Hello World\")"]
+  },
+
+  "in python, make a function called add that adds x and y (in that order)": {
+    "answer": ["def add(x,y): return x+y"]
+  },
+
+  "in python, make a function called isEven that tests if x is even in one line": {
+    "answer": ["def isEven(x): return x%2==0"]
+  }
+}
