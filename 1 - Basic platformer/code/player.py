@@ -1,5 +1,6 @@
-import pygame 
+import pygame, sys 
 from support import import_folder
+from settings import screen_height
 
 class Player(pygame.sprite.Sprite):
 	def __init__(self,pos,floor):
@@ -84,6 +85,9 @@ class Player(pygame.sprite.Sprite):
 	def apply_gravity(self):
 		self.dir.y += self.gravity
 		self.rect.y += self.dir.y
+		if self.rect.y >= screen_height:
+			pygame.quit()
+			sys.exit()
 
 	def update(self):
 		self.animate()
